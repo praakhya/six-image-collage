@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "siz-image-collage": {
+      "projectType": "library",
+      "root": "projects/siz-image-collage",
+      "sourceRoot": "projects/siz-image-collage/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/siz-image-collage/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/siz-image-collage/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/siz-image-collage/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/siz-image-collage/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
