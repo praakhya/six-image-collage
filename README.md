@@ -23,4 +23,6 @@ The component can take 3 inputs
 ```
 
 ## Preview
-![preview](preview.png)
+<div style="text-align: center">
+<img src="preview.png" width="60%"/>
+</div>
