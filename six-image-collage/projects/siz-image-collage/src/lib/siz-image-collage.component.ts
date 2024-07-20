@@ -6,99 +6,84 @@ import {Component, Input} from '@angular/core';
   imports: [],
   template: `
     <style>
-      :root {
-        --contw: 60vw;
-      }
-      .cover-mask {
-        border-radius: 1em;
-        z-index: 1;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        display: inline-block;
-        /*background: linear-gradient(to bottom, transparent,rgba(255,255,255,1) 50%); /* W3C */
-        background: linear-gradient(to bottom, #333, #333 50%, #eee 100%, #eee 100%);
-      }
-
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
       .container {
-        width: var(--contw);
-        height: fit-content;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-radius: 1em;
-        background-position: center;
-        background-size: cover;
+        height: 96vh;
+        width: 90vw;
+        max-width: 30em;
+        min-width: 25em;
         overflow: hidden;
+        position: relative;
       }
-      .imgcontainer {
-        z-index: 2;
-        width: var(--contw);
-        height: fit-content;
-        display: inline-flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-self: flex-end;
-        align-self: flex-end;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        overflow: hidden;
-        border-radius: 1em;
-
-
-        /*
-        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 37%, rgba(255,255,255,1) 64%, rgba(255,255,255,0) 100%);
-        */
-        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 62%);
-
-
-      }
-
-      .imgtile {
-        border: 0.5em solid white;
-        align-self: center;
-        justify-self: center;
-        width: 30%;
-        z-index: 2;
-        flex-shrink: 1;
-        position: static;
-
-      }
-      .shift-up {
-        transform: translateY(-5em);
-      }
-      .shift-down {
-        transform: translateY(5em);
-      }
-
-
-
-      .imgcontainer:nth-child(4), .imgcontainer:nth-child(5) {
-        margin-left: 0;
-        margin-top: -10em;
-      }
-      .imgcontainer:first-child {
-        margin-left: 0;
-        margin-top: 0;
-      }
-      .cover {
+      .cover-container {
+        position: absolute;
+        border-radius: 2em;
         top: 0;
-        width: 100%;
+        left: 0;
         z-index: 0;
-        filter: opacity(0.5);
+        width: 100%;
+        height: 60%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+
       }
       .content {
+        font-family: "Roboto", sans-serif;
+        position: absolute;
+        bottom: 60%;
+        left: 0;
+        max-height: 40%;
         width: 80%;
-        height: 100%;
-        z-index: 5;
+        margin: 10%;
+        vertical-align: bottom;
+        z-index: 1000;
         color: white;
-        text-shadow: 1px 1px black;
-        padding-left: 5%;
+        border-bottom: 3px solid white;
+        padding-bottom: 1em;
       }
+      .cover-container > img {
+        -webkit-mask:linear-gradient(#0000,#fff,#fff, #fff, #fff);
+        mask:linear-gradient(#0000,#fff);
+      }
+      .cover-container > img + .cover-container > img {
+        -webkit-mask:linear-gradient(#000000 50%,#fff 0);
+        mask:linear-gradient(#0000 50%,#fff 0);
+      }
+      .cover-container > img {
+        z-index: 0;
+        width: 100%;
 
-
-
+      }
+      .img-container {
+        position: absolute;
+        top: 40%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .imgtile {
+        max-width: 29%;
+        max-height: 25vh;
+        border: 8px solid white;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .imgtile > img {
+        width: 100%;
+      }
+      .shift-up {
+        transform: translateY(-20%);
+      }
+      .shift-down {
+        transform: translateY(10%);
+      }
       .circle {
         border-radius: 100%;
 
@@ -106,45 +91,27 @@ import {Component, Input} from '@angular/core';
       .square {
         border-radius: 2em;
       }
-      @media only screen and (max-width: 764px)  {
-        .container {
-          width: 100%;
-        }
-        .imgcontainer {
-          width: 100%;
-          align-content: stretch;
-          justify-content: space-evenly;
-        }
-        .imgtile {
-          width: 30%;
-          flex-grow: 1;
-          z-index: 100;
-        }
-      }
 
     </style>
-    <div class="container" style="{{generateContainerCSS()}}">
-
-      <div class="content">
-        <ng-content></ng-content>
+    <div class="container">
+      <div class="cover-container">
+        <img src="{{cover}}"/>
       </div>
-
-
-      <div class="imgcontainer">
-
+      <div class="content"><ng-content></ng-content></div>
+      <div class="img-container">
         @for (i of images.slice(0, 3); track i) {
-          <img src="{{i}}" class="{{generateClassList(['shift-down'])}}" style="{{generateOverlap()}}"/>
+          <div class="{{generateClassList(['shift-down'])}}" style="{{generateOverlap()}}">
+            <img src="{{i}}"/>
+          </div>
         }
         <div style="flex-basis: 100%; height: 0;"></div>
         @for (i of images.slice(3, 5); track i) {
-          <img src="{{i}}" class="{{generateClassList(['shift-up'])}}" style="{{generateOverlap()}}"/>
+          <div class="{{generateClassList(['shift-up'])}}" style="{{generateOverlap()}}">
+            <img src="{{i}}"/>
+
+          </div>
         }
       </div>
-    </div>
-
-    <div>
-
-
     </div>
 
   `,
@@ -175,7 +142,7 @@ export class SizImageCollageComponent {
     return `background-image: url(${(this.cover)});`;
   }
   generateContainerCSS() {
-    if (this.width) document.documentElement.style.setProperty("--contw", this.width);
+    if (this.width) document.documentElement.style.setProperty("$contw", this.width);
     return `${this.generateCover()}`
   }
 
