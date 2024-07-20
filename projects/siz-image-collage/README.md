@@ -21,3 +21,6 @@ The component can take 3 inputs
   </div>
 </lib-siz-image-collage>
 ```
+
+## Preview
+![preview](src/assets/preview.png)
